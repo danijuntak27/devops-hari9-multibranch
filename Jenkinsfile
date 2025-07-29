@@ -17,7 +17,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def imageName = "hello-multibranch:${env.BRANCH_NAME}"
+                    def safeBranch = env.BRANCH_NAME.replaceAll(/[^a-zA-Z0-9_.-]/, '-')
+                    def imageName = "hello-multibranch:${safeBranch}"
+                    echo "🔧 Membangun Docker image dengan tag: $imageName"
                     sh "docker build -t $imageName ."
                 }
             }
